@@ -1,6 +1,7 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
+    "skipLibCheck": true,
     "importHelpers": false,
     "module": "esnext",
     "outDir": "./dist/out-tsc",
@@ -25,6 +26,7 @@
   },
   "angularCompilerOptions": {
     "enableIvy": false,
-    "strictTemplates": true
+    "strictTemplates": true,
+    "skipLibCheck": true
   }
 }

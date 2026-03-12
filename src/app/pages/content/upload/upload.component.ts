@@ -13,11 +13,8 @@ export class UploadComponent {
 
   @Input() onUpload = (files: File[]) => { };
 
-  onFilesChange() {
-
-    this.onUpload([...this.files]);
-
-    this.files.length = 0;
+  onFilesChange(event: any) {
+    this.onUpload([...event.addedFiles]);
   }
 
 }

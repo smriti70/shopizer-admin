@@ -63,10 +63,12 @@ export class ProductsListComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.setSettings();
     this.getStore();
     this.getList();
     this.translate.onLangChange.subscribe((lang) => {
       this.params.lang = this.storageService.getLanguage();
+      this.setSettings();
       this.getList();
     });
 
@@ -126,7 +128,6 @@ export class ProductsListComponent implements OnInit {
     const startFrom = this.currentPage - 1;
     this.params.page = startFrom;
     this.fetchTableData();
-    this.setSettings();
   }
 
   setSettings() {
@@ -139,8 +140,8 @@ export class ProductsListComponent implements OnInit {
         position: 'right',
         sort: true,
         custom: [
-          { name: 'edit', title: '<i class="nb-edit"></i>' },
-          { name: 'remove', title: '<i class="nb-trash"></i>' }
+          { name: 'edit', title: '<span onclick="event.preventDefault()"><i class="nb-edit"></i></span>' },
+          { name: 'remove', title: '<span onclick="event.preventDefault()"><i class="nb-trash"></i></span>' }
         ],
       },
       pager: {
@@ -163,7 +164,12 @@ export class ProductsListComponent implements OnInit {
           title: this.translate.instant('PRODUCT.PRODUCT_NAME'),
           type: 'html',
           filter: true,
-          editable: false
+          editable: false,
+          valuePrepareFunction: (name) => {
+            const product = this.products.find(el => el.name === name);
+            const id = product ? product.id : '';
+            return `<a href="#/pages/catalogue/products/product/${id}">${name}</a>`;
+          }
         },
         quantity: {
           title: this.translate.instant('PRODUCT.QTY'),
@@ -261,10 +267,11 @@ export class ProductsListComponent implements OnInit {
     this.getList();
   }
   route(e) {
+    e.event?.preventDefault();
     if (e.action == 'remove') {
       this.deleteRecord(e)
     } else {
-      this.router.navigate(['pages/catalogue/products/product/' + e.data.id]);
+      this.router.navigate(['/pages/catalogue/products/product/' + e.data.id]);
     }
   }
 }
