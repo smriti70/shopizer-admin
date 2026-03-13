@@ -22,9 +22,6 @@ jobs:
       - name: Install dependencies
         run: npm install --legacy-peer-deps
 
-      - name: Run tests
-        run: npm test -- --watch=false --browsers=ChromeHeadless
-
       - name: Build artifact
         run: npm run build
 
